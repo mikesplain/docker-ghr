@@ -1,19 +1,17 @@
-FROM frolvlad/alpine-glibc:alpine-3.6
-LABEL maintainer "tsub <tsubasatakayama511@gmail.com>"
-LABEL io.whalebrew.config.environment '["GITHUB_TOKEN"]'
-LABEL io.whalebrew.config.volumes '["~/.gitconfig:/.gitconfig:ro"]'
+FROM alpine:3.7
 
-ENV GHR_VERSION="0.5.4"
+ENV GHR_VERSION="0.9.0"
 
-RUN apk update --no-cache && \
-    apk add --no-cache \
+RUN apk add --no-cache \
         git && \
     apk add --no-cache --virtual build-dependencies \
         curl \
-        unzip && \
-    curl -fSL -o ghr.zip "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.zip" && \
-    unzip -d /usr/local/bin ghr.zip && \
-    rm ghr.zip && \
+        tar && \
+    curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.tar.gz" && \
+    mkdir -p /tmp/ghr && \
+    tar -zxvf ghr.tar.gz -C /tmp/ghr --strip-components=1 && \
+    mv /tmp/ghr/ghr /ghr && \
+    rm -rf ghr.tar.gz /tmp/ghr && \
     apk del --purge build-dependencies
 
 ENTRYPOINT ["ghr"]
