@@ -10,7 +10,7 @@ RUN apk add --no-cache \
     curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.tar.gz" && \
     mkdir -p /tmp/ghr && \
     tar -zxvf ghr.tar.gz -C /tmp/ghr --strip-components=1 && \
-    mv /tmp/ghr/ghr /ghr && \
+    mv /tmp/ghr/ghr /usr/local/bin/ghr && \
     rm -rf ghr.tar.gz /tmp/ghr && \
     apk del --purge build-dependencies
 
